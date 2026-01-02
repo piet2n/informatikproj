@@ -10,16 +10,13 @@ PLAYER_SIZE = 28
 PLAYER_SPEED = 250
 FPS = 60
 # ------------------------------------
-
 # ---------- MySQL forbindelses-info ----------
 DB_HOST = "localhost"
-DB_USER = "frank"
-DB_PASS = "fisk34"
+DB_USER = "bammanx"
+DB_PASS = "1"
 DB_NAME = "store"
 # ---------------------------------------------
-
-
-# ------------------ PIL TEGNING ------------------
+# ------------------ TEGNING ------------------
 def draw_arrow(surface, x, y, angle):
     length = 30
     width = 12
@@ -44,7 +41,7 @@ def draw_arrow(surface, x, y, angle):
 # --------------------------------------------------
 
 
-# 🔵 NYT – sikrer database + tabel findes
+# sikrer database + tabel findes
 def db_init():
     try:
         conn = mysql.connector.connect(
@@ -113,7 +110,7 @@ def db_search_item(navn):
         return None
 
 
-# 🔵 NYT – indsæt item i databasen fra Pygame
+# indsæt item i databasen fra Pygame
 def db_insert_item(name, x, y):
     try:
         conn = mysql.connector.connect(
@@ -174,19 +171,17 @@ def main():
     # Zoom faktor (0.5 betyder 50% størrelse = zoomet ud)
     zoom = 0.5
 
-    # Skaleret størrelse på kort og spiller (til rendering)
+    # Skaleret størrelse på kort og spiller 
     scaled_map_w = int(MAP_W * zoom)
     scaled_map_h = int(MAP_H * zoom)
 
-    # Lav et skaleret kort-surface (kan laves én gang for performance)
+    # Lav et skaleret kort og spiller
     scaled_map_surf = pygame.transform.smoothscale(map_surf, (scaled_map_w, scaled_map_h))
-
-    # Lav også skaleret spiller-surface og mask
     scaled_player_size = int(PLAYER_SIZE * zoom)
     scaled_player_surf = create_player_surface(scaled_player_size)
     scaled_player_mask = pygame.mask.from_surface(scaled_player_surf)
 
-    # ----------- Søgeboks -----------
+    # ----------- Søgefelt -----------
     font = pygame.font.SysFont(None, 28)
     search_text = ""
     search_active = False
