@@ -6,4 +6,12 @@ pip install pygame mysql-connector-python
 Der skal samtidig være forbindelse til en lokalhostet SQL-server
 PhpMyAdmin som del af XAMPP anbefales
 https://www.apachefriends.org/index.html
-**Ændr login-information på linje 14-17 så det passer din installation**
+**Ændr login-information på linje 13-16 så det passer din installation**
+Søgebaren virker med følgende varer:
+Frugt
+Chips
+Sodavand
+Gedeost
+Sandwich
+Blandselv slik
+Kage

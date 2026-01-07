@@ -9,13 +9,11 @@ SCREEN_W, SCREEN_H = 900, 600
 PLAYER_SIZE = 28
 PLAYER_SPEED = 250
 FPS = 60
-# ------------------------------------
-# ---------- MySQL forbindelses-info ----------
+# FORBINDELSESINFO TIL MySQL
 DB_HOST = "localhost"
 DB_USER = "bammanx"
 DB_PASS = "1"
 DB_NAME = "store"
-# ---------------------------------------------
 
 # ------------------ TEGNING ------------------
 def draw_arrow(surface, x, y, angle):
@@ -38,9 +36,9 @@ def draw_arrow(surface, x, y, angle):
         rotated.append((x + rx, y + ry))
 
     pygame.draw.polygon(surface, (255, 0, 0), rotated)
-# --------------------------------------------------
 
 
+# Forbindelse til mySQL
 def db_init():
     try:
         conn = mysql.connector.connect(
@@ -68,7 +66,7 @@ def db_init():
 
         cur.execute("SELECT COUNT(*) FROM items")
         count = cur.fetchone()[0]
-
+# hvis databasen er tom, tilføj varer
         if count == 0:
             cur.executemany(
                 "INSERT INTO items (navn, x, y) VALUES (%s, %s, %s)",
@@ -90,7 +88,7 @@ def db_init():
     except Exception as e:
         print("DB init fejl:", e)
 
-
+# søg i databasen efter varen
 def db_search_item(navn):
     try:
         conn = mysql.connector.connect(
@@ -106,7 +104,7 @@ def db_search_item(navn):
         print("MySQL fejl:", e)
         return None
 
-
+# Funktion til at tilføje varer
 def db_insert_item(name, x, y):
     try:
         conn = mysql.connector.connect(
@@ -123,7 +121,7 @@ def db_insert_item(name, x, y):
     except Exception as e:
         print("Fejl ved indsættelse:", e)
 
-
+# gør det umuligt at gå igennem vægge
 def build_obstacle_mask(surface):
     w, h = surface.get_size()
     mask = pygame.Mask((w, h))
@@ -143,7 +141,7 @@ def create_player_surface(size):
     pygame.draw.circle(surf, (255, 200, 0), (size//2, size//2), size//2)
     return surf
 
-
+# Erklær variable start pygame og andet start relateret
 def main():
     db_init()
 
@@ -225,11 +223,11 @@ def main():
                 else:
                     if len(search_text) < 20:
                         search_text += event.unicode
-
+            # tryk e for at tilføje vare på din nuværende lokation
             if event.type == pygame.KEYDOWN and not search_active:
                 if event.key == pygame.K_e:
                     db_insert_item("nyt_item", int(player_x), int(player_y))
-
+        # bevægelses-logik
         if not search_active:
             keys = pygame.key.get_pressed()
             dx = dy = 0
@@ -304,8 +302,7 @@ def main():
                 (cx, cy + text_surf.get_height()),
                 2
             )
-        # ---------------------------------
-
+        
         pygame.display.flip()
 
     pygame.quit()
